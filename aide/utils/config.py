@@ -202,3 +202,40 @@ def save_run(cfg: Config, journal: Journal):
     if best_node is not None:
         with open(cfg.log_dir / "best_solution.py", "w") as f:
             f.write(best_node.code)
+    # concatenate logs
+    with open(cfg.log_dir / "full_log.txt", "w") as f:
+        f.write(
+            concat_logs(
+                cfg.log_dir / "aide.log",
+                cfg.workspace_dir / "best_solution" / "node_id.txt",
+                cfg.log_dir / "filtered_journal.json",
+            )
+        )
+
+
+def concat_logs(chrono_log: Path, best_node: Path, journal: Path):
+    content = (
+        "The following is a concatenation of the log files produced.\n"
+        "If a file is missing, it will be indicated.\n\n"
+    )
+
+    content += "---First, a chronological, high level log of the AIDE run---\n"
+    content += output_file_or_placeholder(chrono_log) + "\n\n"
+
+    content += "---Next, the ID of the best node from the run---\n"
+    content += output_file_or_placeholder(best_node) + "\n\n"
+
+    content += "---Finally, the full journal of the run---\n"
+    content += output_file_or_placeholder(journal) + "\n\n"
+
+    return content
+
+
+def output_file_or_placeholder(file: Path):
+    if file.exists():
+        if file.suffix != ".json":
+            return file.read_text()
+        else:
+            return json.dumps(json.loads(file.read_text()), indent=4)
+    else:
+        return f"File not found."
