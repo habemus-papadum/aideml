@@ -349,7 +349,8 @@ class Agent:
                 # copy submission/submission.csv to best_solution/
                 shutil.copytree(
                     self.cfg.workspace_dir / "submission",
-                    best_solution_dir,
+                    best_solution_dir / "submission",
+                    dirs_exist_ok=True,
                 )
                 # solution.py
                 with open(best_solution_dir / "solution.py", "w") as f:
