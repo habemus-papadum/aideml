@@ -346,11 +346,10 @@ class Agent:
                 logger.info(f"Node {result_node.id} is the best node so far")
                 best_solution_dir = self.cfg.workspace_dir / "best_solution"
                 best_solution_dir.mkdir(exist_ok=True, parents=True)
-                # copy submission/submission.csv to best_solution/
-                shutil.copytree(
-                    self.cfg.workspace_dir / "submission",
-                    best_solution_dir / "submission",
-                    dirs_exist_ok=True,
+                # copy submission/submission.csv to best_solution/submission.csv
+                shutil.copy(
+                    self.cfg.workspace_dir / "submission" / "submission.csv",
+                    best_solution_dir,
                 )
                 # solution.py
                 with open(best_solution_dir / "solution.py", "w") as f:
