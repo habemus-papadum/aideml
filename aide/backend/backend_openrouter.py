@@ -62,7 +62,6 @@ def query(
         _client.chat.completions.create,
         OPENAI_TIMEOUT_EXCEPTIONS,
         messages=messages,
-        # provider={"order": ["Fireworks", "Together"]},
         **filtered_kwargs,
     )
     req_time = time.time() - t0
