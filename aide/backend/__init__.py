@@ -1,5 +1,5 @@
 import logging
-from . import backend_anthropic, backend_openai, backend_openrouter
+from . import backend_anthropic, backend_openai, backend_openrouter, backend_gdm
 from .utils import FunctionSpec, OutputType, PromptType, compile_prompt_to_md
 
 logger = logging.getLogger("aide")
@@ -10,6 +10,8 @@ def determine_provider(model: str) -> str:
         return "openai"
     elif model.startswith("claude-"):
         return "anthropic"
+    elif model.startswith("gemini-"):
+        return "gdm"
     # all other models are handle by openrouter
     else:
         return "openrouter"
@@ -18,6 +20,7 @@ def determine_provider(model: str) -> str:
 provider_to_query_func = {
     "openai": backend_openai.query,
     "anthropic": backend_anthropic.query,
+    "gdm": backend_gdm.query,
     "openrouter": backend_openrouter.query,
 }
 
