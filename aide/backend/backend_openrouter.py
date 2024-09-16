@@ -62,6 +62,12 @@ def query(
         _client.chat.completions.create,
         OPENAI_TIMEOUT_EXCEPTIONS,
         messages=messages,
+        extra_body={
+            "provider": {
+                "order": ["Fireworks"],
+                "ignore": ["Together", "DeepInfra", "Hyperbolic"],
+            },
+        },
         **filtered_kwargs,
     )
     req_time = time.time() - t0
